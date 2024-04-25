@@ -81,7 +81,11 @@ export const signout = async (req, res) => {
   try {
     const user = req.user;
     res
-      .clearCookie("access_token")
+      .clearCookie("access_token", {
+        sameSite: "None",
+        secure: true,
+        expires: new Date(0),
+      })
       .status(200)
       .json({ success: true, message: "User Logged out Successfully!" });
   } catch (error) {

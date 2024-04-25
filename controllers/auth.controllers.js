@@ -59,11 +59,19 @@ export const signin = async (req, res) => {
       updatedAt: updated,
       ...rest
     } = validUser._doc;
-    res.cookie("access_token", token, { httpOnly: true }).status(200).json({
-      success: true,
-      user: rest,
-      message: "User Logged in Successfully!",
-    });
+    res
+      .cookie("access_token", token, {
+        httpOnly: true,
+        sameSite: "None",
+        secure: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      })
+      .status(200)
+      .json({
+        success: true,
+        user: rest,
+        message: "User Logged in Successfully!",
+      });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
